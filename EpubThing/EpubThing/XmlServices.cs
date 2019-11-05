@@ -1,17 +1,45 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace EpubThing
 {
     static class XmlServices
     {
+
+        public static List<EpubChapter> GetChapters(XDocument ncxDoc)
+        {
+            ncxDoc = RemoveNamespaces(ncxDoc);
+            XElement navMap = ncxDoc.Descendants("navMap").FirstOrDefault();
+            IEnumerable<XElement> chapterNodes = navMap.Elements("navPoint");
+
+            List<EpubChapter> chapters = new List<EpubChapter>();
+
+            foreach (XElement ch in chapterNodes)
+                chapters.Add(GetNavpointChapters(ch));
+
+            return chapters;
+        }
+
+        static EpubChapter GetNavpointChapters(XElement navPoint)
+        {
+            XElement labelNode = navPoint.Element("navLabel");
+            XElement textNode = labelNode.Element("text");
+
+            EpubChapter chapter = new EpubChapter(textNode.Value);
+
+            XElement contentNode = navPoint.Element("content");
+            chapter.ContentPath = contentNode.Attribute("src").Value;
+
+            IEnumerable<XElement> subChapters = navPoint.Elements("navPoint");
+            foreach (var x in subChapters)
+                chapter.SubChapters.Add(GetNavpointChapters(x));
+
+            return chapter;
+        }
+
         public static string GetNcxFilePath(XDocument content)
         {
-            /*XNode ncxNode = content.Descendants()
-                .Where(x => x.Name == "item")
-                .Where(x => (x as XElement).Attribute("id").Value == "ncx")
-                .FirstOrDefault();*/
-
             content = RemoveNamespaces(content);
 
             XElement ncxElement = content.Descendants("item")
@@ -31,7 +59,7 @@ namespace EpubThing
                 x => x.Name == "full-path").FirstOrDefault().Value;
         }
 
-        public static XDocument RemoveNamespaces(XDocument xdoc)
+        static XDocument RemoveNamespaces(XDocument xdoc)
         {
             var namespaces = from a in xdoc.Descendants().Attributes()
                              where a.IsNamespaceDeclaration && a.Name != "xsi"

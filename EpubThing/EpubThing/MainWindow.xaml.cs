@@ -18,8 +18,7 @@ namespace EpubThing
         string tempFolderPath;
         string contentFolderPath;
 
-        List<string> chapterNames;
-        Dictionary<string, string> chapterContent;
+        List<EpubChapter> chapters;
 
         public MainWindow()
         {
@@ -27,6 +26,13 @@ namespace EpubThing
 
             tempFolderPath = Path.Combine(Path.GetTempPath(), "EpubThing");
             openFilePath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnExit);
+        }
+
+        private void OnExit(object sender, EventArgs e)
+        {
+            Directory.Delete(tempFolderPath, true);
         }
 
         private void Open_Click(object sender, RoutedEventArgs e)
@@ -59,30 +65,17 @@ namespace EpubThing
             ncxFilePath = Path.Combine(contentFolderPath, ncxFilePath);
 
             XDocument ncxDoc = XDocument.Load(ncxFilePath);
-            ncxDoc = XmlServices.RemoveNamespaces(ncxDoc);
-            IEnumerable<XElement> chapterNodes = ncxDoc.Descendants()
-                .Where(x => x.Name == "navPoint");
-            chapterNodes.OrderBy(x => Int32.Parse(x.Attribute("playOrder").Value));
 
-            chapterNames = new List<string>();
-            chapterContent = new Dictionary<string, string>();
-            foreach (var e in chapterNodes)
-            {
-                string title = e.Descendants().Where(x => x.Name == "text").FirstOrDefault().Value;
-                string contentPath = e.Descendants().Where(x => x.Name == "content").FirstOrDefault().Attribute("src").Value;
+            chapters = XmlServices.GetChapters(ncxDoc);
 
-                chapterNames.Add(title);
-                chapterContent[title] = contentPath;
-            }
-
-            ChapterView.ItemsSource = chapterNames;
+            ChapterView.ItemsSource = chapters;
         }
 
         private void ChapterView_SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            string filePath = Path.Combine(
-                contentFolderPath,
-                chapterContent[(string)ChapterView.SelectedItem]);
+            string filePath = ((EpubChapter)ChapterView.SelectedItem).ContentPath;
+
+            filePath = Path.Combine(contentFolderPath, filePath);
 
             BookView.Source = new Uri(filePath);
         }

@@ -21,7 +21,13 @@
             <MenuItem Header="Open" Click="Open_Click"/>
         </Menu>
 
-        <TreeView x:Name="ChapterView" Grid.Row="1" SelectedItemChanged="ChapterView_SelectionChanged"/>
+        <TreeView x:Name="ChapterView" Grid.Row="1" SelectedItemChanged="ChapterView_SelectionChanged">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding SubChapters}">
+                    <TextBlock Text="{Binding Title}"/>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
 
         <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"/>
 
