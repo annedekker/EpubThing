@@ -1,0 +1,14 @@
+C:\Users\Gebruiker\source\repos\EpubThing\EpubThing\bin\Debug\EpubThing.exe.config
+C:\Users\Gebruiker\source\repos\EpubThing\EpubThing\bin\Debug\EpubThing.exe
+C:\Users\Gebruiker\source\repos\EpubThing\EpubThing\bin\Debug\EpubThing.pdb
+C:\Users\Gebruiker\source\repos\EpubThing\EpubThing\obj\Debug\EpubThing.csprojAssemblyReference.cache
+C:\Users\Gebruiker\source\repos\EpubThing\EpubThing\obj\Debug\MainWindow.g.cs
+C:\Users\Gebruiker\source\repos\EpubThing\EpubThing\obj\Debug\App.g.cs
+C:\Users\Gebruiker\source\repos\EpubThing\EpubThing\obj\Debug\EpubThing_MarkupCompile.cache
+C:\Users\Gebruiker\source\repos\EpubThing\EpubThing\obj\Debug\EpubThing_MarkupCompile.lref
+C:\Users\Gebruiker\source\repos\EpubThing\EpubThing\obj\Debug\MainWindow.baml
+C:\Users\Gebruiker\source\repos\EpubThing\EpubThing\obj\Debug\EpubThing.g.resources
+C:\Users\Gebruiker\source\repos\EpubThing\EpubThing\obj\Debug\EpubThing.Properties.Resources.resources
+C:\Users\Gebruiker\source\repos\EpubThing\EpubThing\obj\Debug\EpubThing.csproj.GenerateResource.cache
+C:\Users\Gebruiker\source\repos\EpubThing\EpubThing\obj\Debug\EpubThing.exe
+C:\Users\Gebruiker\source\repos\EpubThing\EpubThing\obj\Debug\EpubThing.pdb

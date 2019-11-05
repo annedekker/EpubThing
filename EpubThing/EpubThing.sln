@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EpubThing", "EpubThing\EpubThing.csproj", "{38CF00F0-4203-459A-BD11-54E7F98F7993}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{38CF00F0-4203-459A-BD11-54E7F98F7993}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38CF00F0-4203-459A-BD11-54E7F98F7993}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38CF00F0-4203-459A-BD11-54E7F98F7993}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38CF00F0-4203-459A-BD11-54E7F98F7993}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DC38995A-D527-40E0-88C7-21B714155637}
+	EndGlobalSection
+EndGlobal
