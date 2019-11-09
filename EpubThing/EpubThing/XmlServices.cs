@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using EpubThing.Model;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -6,12 +8,25 @@ namespace EpubThing
 {
     static class XmlServices
     {
-
-        public static List<EpubChapter> GetChapters(XDocument ncxDoc)
+        public static string GetTitle(string contentFileName)
         {
+            XDocument content = XDocument.Load(contentFileName);
+            content = RemoveNamespaces(content);
+
+            XNode titleNode = content.Descendants("title").FirstOrDefault();
+
+            return (titleNode as XElement).Value;
+        }
+
+        public static List<EpubChapter> GetChapters(string ncxFileName)
+        {
+            XDocument ncxDoc = XDocument.Load(ncxFileName);
             ncxDoc = RemoveNamespaces(ncxDoc);
+
             XElement navMap = ncxDoc.Descendants("navMap").FirstOrDefault();
             IEnumerable<XElement> chapterNodes = navMap.Elements("navPoint");
+
+            chapterNodes.OrderBy(ch => Int32.Parse((ch as XElement).Attribute("playOrder").Value));
 
             List<EpubChapter> chapters = new List<EpubChapter>();
 
@@ -29,17 +44,21 @@ namespace EpubThing
             EpubChapter chapter = new EpubChapter(textNode.Value);
 
             XElement contentNode = navPoint.Element("content");
-            chapter.ContentPath = contentNode.Attribute("src").Value;
+            chapter.FilePath = contentNode.Attribute("src").Value;
 
             IEnumerable<XElement> subChapters = navPoint.Elements("navPoint");
+
+            subChapters.OrderBy(ch => Int32.Parse((ch as XElement).Attribute("playOrder").Value));
+
             foreach (var x in subChapters)
                 chapter.SubChapters.Add(GetNavpointChapters(x));
 
             return chapter;
         }
 
-        public static string GetNcxFilePath(XDocument content)
+        public static string GetNcxFilePath(string contentFileName)
         {
+            XDocument content = XDocument.Load(contentFileName);
             content = RemoveNamespaces(content);
 
             XElement ncxElement = content.Descendants("item")
@@ -48,8 +67,9 @@ namespace EpubThing
             return ncxElement.Attribute("href").Value;
         }
 
-        public static string GetContentFilePath(XDocument container)
+        public static string GetContentFilePath(string containerFileName)
         {
+            XDocument container = XDocument.Load(containerFileName);
             container = RemoveNamespaces(container);
 
             XNode rootFileNode = container.Descendants().Where(

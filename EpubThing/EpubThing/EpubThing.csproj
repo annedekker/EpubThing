@@ -56,7 +56,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="EpubChapter.cs" />
+    <Compile Include="Model\EpubBook.cs" />
+    <Compile Include="Model\EpubChapter.cs" />
+    <Compile Include="Model\EpubManager.cs" />
     <Compile Include="XmlServices.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
