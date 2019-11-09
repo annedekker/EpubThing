@@ -10,7 +10,8 @@ namespace EpubThing.Model
 
         public string FilePath { get; set; }
 
-        public int PageNumber { get; set; }
+        public bool HasPageNumber { get; private set; }
+        public int PageNumber { get; private set; }
 
         public EpubChapter()
         {
@@ -21,6 +22,12 @@ namespace EpubThing.Model
         {
             this.Title = title;
             this.SubChapters = new List<EpubChapter>();
+        }
+
+        public void SetPageNumber(int number)
+        {
+            this.HasPageNumber = true;
+            this.PageNumber = number;
         }
     }
 }

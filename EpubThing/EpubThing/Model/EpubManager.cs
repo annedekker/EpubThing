@@ -46,6 +46,9 @@ namespace EpubThing.Model
             this.Book.Chapters = XmlServices.GetChapters(
                 Path.Combine(ContentFolderPath, ncxFilePath));
 
+            foreach (var ch in this.Book.Chapters)
+                HtmlReader.AddChapterPageNumber(ch, this);
+
             return this.Book;
         }
 
