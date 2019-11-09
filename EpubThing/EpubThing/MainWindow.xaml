@@ -18,10 +18,12 @@
         </Grid.ColumnDefinitions>
 
         <Menu Grid.ColumnSpan="3">
-            <MenuItem Header="Open" Click="Open_Click"/>
+            <MenuItem Header="Open" Command="{Binding OpenFileCommand}"/>
         </Menu>
 
-        <TreeView x:Name="ChapterView" Grid.Row="1" SelectedItemChanged="ChapterView_SelectionChanged">
+        <TreeView Grid.Row="1" 
+                  ItemsSource="{Binding Book.Chapters}"
+                  SelectedItemChanged="Chapters_SelectionChanged">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding SubChapters}">
                     <TextBlock Text="{Binding Title}"/>
@@ -31,6 +33,7 @@
 
         <GridSplitter Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"/>
 
-        <WebBrowser x:Name="BookView" Grid.Row="1" Grid.Column="2"/>
+        <WebBrowser x:Name="BookView" Grid.Row="1" Grid.Column="2"
+                    local:WebbrowserUtility.BindableSource="{Binding ViewSource}"/>
     </Grid>
 </Window>

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EpubThing.Model
 {
@@ -51,6 +47,11 @@ namespace EpubThing.Model
                 Path.Combine(ContentFolderPath, ncxFilePath));
 
             return this.Book;
+        }
+
+        public string GetChapterFilePath(EpubChapter chapter)
+        {
+            return Path.Combine(ContentFolderPath, chapter.FilePath);
         }
     }
 }
