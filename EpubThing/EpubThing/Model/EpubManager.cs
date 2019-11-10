@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 
 namespace EpubThing.Model
 {
@@ -49,12 +50,33 @@ namespace EpubThing.Model
             foreach (var ch in this.Book.Chapters)
                 HtmlReader.AddChapterPageNumber(ch, this);
 
+            GetContentPageNumbers();
+
             return this.Book;
         }
 
         public string GetChapterFilePath(EpubChapter chapter)
         {
             return Path.Combine(ContentFolderPath, chapter.FilePath);
+        }
+
+        private void GetContentPageNumbers()
+        {
+            string[] htmlFiles = Directory.GetFiles(ContentFolderPath, "*.html", SearchOption.AllDirectories);
+
+            foreach (var filename in htmlFiles)
+            {
+                int? pageNum = HtmlReader.GetContentFilePageNumber(filename);
+
+                if (pageNum != null)
+                    this.Book.ContentPageNumbers[filename] = pageNum.Value;
+            }
+
+            string lastFile = this.Book.ContentPageNumbers.Keys
+                .OrderByDescending(k => this.Book.ContentPageNumbers[k])
+                .First();
+
+            this.Book.LastPageNumber = HtmlReader.GetLastPageNumber(lastFile);
         }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using ReactiveUI;
 using System;
+using System.Linq;
 using System.Windows.Input;
 
 namespace EpubThing
@@ -31,7 +32,15 @@ namespace EpubThing
             set => this.RaiseAndSetIfChanged(ref this.viewSource, value);
         }
 
+        private string selectPageText;
+        public string SelectPageText
+        {
+            get => this.selectPageText;
+            set => this.RaiseAndSetIfChanged(ref this.selectPageText, value);
+        }
+
         public ICommand OpenFileCommand { get; }
+        public ICommand SelectPageCommand { get; }
 
         public MainViewModel()
         {
@@ -40,6 +49,7 @@ namespace EpubThing
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnExit);
 
             this.OpenFileCommand = ReactiveCommand.Create(OpenFile);
+            this.SelectPageCommand = ReactiveCommand.Create(SelectPage);
 
             this.WhenAnyValue(x => x.SelectedChapter).Subscribe(ch => SelectChapter());
         }
@@ -65,6 +75,35 @@ namespace EpubThing
             if (SelectedChapter == null) return;
 
             this.ViewSource = manager.GetChapterFilePath(SelectedChapter);
+        }
+
+        private void SelectPage()
+        {
+            int val;
+            if (!Int32.TryParse(SelectPageText, out val))
+            {
+                SelectPageText = "";
+                return;
+            }
+            else if (val < 1)
+            {
+                val = 1;
+                SelectPageText = val.ToString();
+            }
+            else if (val > this.Book.LastPageNumber)
+            {
+                val = this.Book.LastPageNumber;
+                SelectPageText = val.ToString();
+            }
+
+            string contentFile = this.book.ContentPageNumbers.Keys
+                .Where(x => this.Book.ContentPageNumbers[x] <= val)
+                .OrderByDescending(x => this.Book.ContentPageNumbers[x])
+                .FirstOrDefault();
+
+            string contentLink = contentFile + "#page_" + val.ToString();
+
+            this.ViewSource = contentLink;
         }
     }
 }

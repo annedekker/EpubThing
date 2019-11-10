@@ -13,6 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.6*"/>
@@ -43,5 +44,20 @@
 
         <WebBrowser x:Name="BookView" Grid.Row="1" Grid.Column="2"
                     local:WebbrowserUtility.BindableSource="{Binding ViewSource}"/>
+
+        <DockPanel Grid.Row="2" Grid.ColumnSpan="3">
+            <TextBlock Text="{Binding Book.LastPageNumber, StringFormat={} / {0}, FallbackValue=213}"
+                       DockPanel.Dock="Right" Margin="4,2"
+                       VerticalAlignment="Center"/>
+            <TextBox Text="{Binding SelectPageText, UpdateSourceTrigger=PropertyChanged}"
+                     DockPanel.Dock="Right" Margin="4,2" Width="32">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Return" Command="{Binding SelectPageCommand}"/>
+                </TextBox.InputBindings>
+            </TextBox>
+            <TextBlock Text="{Binding Book.Title, FallbackValue=Alice in Wonderland}"
+                       Margin="4,2"
+                       VerticalAlignment="Center"/>
+        </DockPanel>
     </Grid>
 </Window>
